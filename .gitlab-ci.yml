@@ -1,0 +1,44 @@
+# Listenerer CI: compile the exes, then mirror to GitHub (only if the build passed,
+# so GitHub never receives a commit that doesn't compile).
+# Runner: docker executor on vein. GITHUB_TOKEN: masked project CI variable
+# (source of truth: Infisical GITHUB_LOTEK4U_TOKEN).
+
+stages:
+  - build
+  - mirror
+
+build-exe:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  variables:
+    DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+    NUGET_PACKAGES: "$CI_PROJECT_DIR/.nuget"
+  cache:
+    key: nuget
+    paths:
+      - .nuget/
+  script:
+    # EnableWindowsTargeting: cross-compile the win-x64 apps (incl. WinForms) on the Linux runner
+    - dotnet publish src/RecordingBot.Console/RecordingBot.Console.csproj -c Release -r win-x64 --self-contained true -p:EnableWindowsTargeting=true -o publish/bot
+    - dotnet publish src/ListenererConfig/ListenererConfig.csproj -c Release -r win-x64 --self-contained true -p:EnableWindowsTargeting=true -o publish/config
+    - test -f publish/bot/RecordingBot.Console.exe
+    - test -f publish/config/ListenererConfig.exe
+    - echo "exes compiled OK"
+  artifacts:
+    name: "listenerer-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - publish/bot/
+      - publish/config/
+    expire_in: 2 weeks
+
+mirror-to-github:
+  stage: mirror
+  image: alpine/git:latest
+  variables:
+    GIT_DEPTH: "0"          # full history — a shallow clone cannot be pushed
+    GIT_STRATEGY: clone
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - git push "https://x-access-token:${GITHUB_TOKEN}@github.com/lotek4u/listenerer.git" "HEAD:refs/heads/main"
+    - git push "https://x-access-token:${GITHUB_TOKEN}@github.com/lotek4u/listenerer.git" --tags
