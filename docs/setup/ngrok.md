@@ -1,3 +1,5 @@
+> **Listenerer note: ngrok is NOT required.** This page is upstream's local-dev tunnel guide, kept for reference only. Production uses real DNS + cert + port-forwards — see LISTENERER.md.
+
 # Ngrok
 
 From the Ngrok documentation – "`ngrok allows you to expose a web server running on your local machine to the internet.`"

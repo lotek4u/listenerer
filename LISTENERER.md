@@ -167,6 +167,11 @@ when the call ends.
 
 ## Testing without a real call
 
-`docs/test/end-to-end-testing.md` covers upstream's approach. For local iteration,
-`docs/setup/ngrok.md` describes tunneling signaling + media if you want to test from a
-dev box before the server is wired up.
+`docs/test/end-to-end-testing.md` covers upstream's approach.
+
+**ngrok is NOT required.** Upstream's docs mention ngrok Pro as a local-dev tunnel for
+people without public DNS/certs — it is a tutorial convenience, never a runtime
+dependency. This deployment uses real DNS + cert + firewall port-forwards instead
+(see the install section). Cloudflare Tunnel is not a substitute for the media port:
+Teams' media relays need a direct TCP connection, which CF Tunnel's TCP mode cannot
+provide. Test on the machine that has the port-forwards.
