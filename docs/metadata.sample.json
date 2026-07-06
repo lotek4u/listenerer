@@ -1,0 +1,20 @@
+{
+  "callId": "4d1b0e2a-9c47-4f3e-8b6a-2f5c91d7e830",
+  "direction": "Incoming",
+  "observedParticipantId": "b7e2a9c4-51d8-4e0f-9a3b-6c8d2f419e75",
+  "startTimeUtc": "2026-07-15T14:02:11.4837221+00:00",
+  "endTimeUtc": "2026-07-15T14:14:45.9120583+00:00",
+  "durationSeconds": 754.4283362,
+  "participants": [
+    {
+      "adId": "b7e2a9c4-51d8-4e0f-9a3b-6c8d2f419e75",
+      "displayName": "Jane Rep"
+    },
+    {
+      "adId": "+15558675309",
+      "displayName": "PSTN +15558675309"
+    }
+  ],
+  "recordingFolder": "D:\\recordings\\4d1b0e2a-9c47-4f3e-8b6a-2f5c91d7e830",
+  "note": "Each participant WAV is named by adId: AAD object id for Teams users, phone number for PSTN callers, or speaker-<id> when no identity was available. When the call has a PSTN leg, single-sided WAVs carry the caller's number as a suffix, e.g. <adId>-[13098214236].wav — match files by adId prefix. 'all.wav' is the mixed stream and is never suffixed."
+}
