@@ -25,10 +25,15 @@ build-exe:
     - test -f publish/config/ListenererConfig.exe
     - echo "exes compiled OK"
   artifacts:
+    # Only our compiled binaries — the full self-contained publish (~300MB with the
+    # bundled runtime) exceeds GitLab's artifact size limit and isn't needed here;
+    # the installer build on the desktop re-publishes anyway.
     name: "listenerer-$CI_COMMIT_SHORT_SHA"
     paths:
-      - publish/bot/
-      - publish/config/
+      - publish/bot/RecordingBot.Console.exe
+      - publish/bot/RecordingBot.*.dll
+      - publish/config/ListenererConfig.exe
+      - publish/config/ListenererConfig.dll
     expire_in: 2 weeks
 
 mirror-to-github:
