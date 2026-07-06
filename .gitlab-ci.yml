@@ -38,7 +38,9 @@ build-exe:
 
 mirror-to-github:
   stage: mirror
-  image: alpine/git:latest
+  image:
+    name: alpine/git:latest
+    entrypoint: [""]   # image's default entrypoint is `git`, which breaks the job shell
   variables:
     GIT_DEPTH: "0"          # full history — a shallow clone cannot be pushed
     GIT_STRATEGY: clone
