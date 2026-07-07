@@ -3,7 +3,7 @@
 ; in the Listenerer Config tool (offered at the end of setup).
 ; Build: ISCC listenerer.iss   (publish/bot and publish/config must exist — see LISTENERER.md)
 
-#define AppVersion "0.1.0"
+#define AppVersion "0.1.1"
 
 [Setup]
 AppId={{7E1B9A44-52C3-4E8F-9D06-listenerer01}

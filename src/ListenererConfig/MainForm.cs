@@ -27,6 +27,7 @@ public class MainForm : Form
         ("Ports",
         [
             new("AzureSettings__CallSignalingPort", "Call signaling port", "9441"),
+            new("AzureSettings__CallSignalingPublicPort", "Signaling public port", "443", Help: "public port in the Teams callback URL; leave 443 unless the edge maps signaling elsewhere"),
             new("AzureSettings__InstanceInternalPort", "Media port (internal)", "8445", Help: "one media port serves ALL concurrent calls"),
             new("AzureSettings__InstancePublicPort", "Media port (public)", Help: "public port NAT-mapped to the internal media port"),
         ]),
@@ -43,10 +44,18 @@ public class MainForm : Form
         ("Advanced",
         [
             new("AzureSettings__PlaceCallEndpointUrl", "Graph endpoint", "https://graph.microsoft.com/v1.0"),
+            new("AzureSettings__ServiceCname", "Service CNAME", Help: "media platform FQDN; blank = service DNS name"),
+            new("AzureSettings__ServicePath", "Service path prefix", Help: "webhook URL path prefix; blank = /"),
             new("AzureSettings__CaptureEvents", "Capture diagnostic events", "false", IsBool: true),
             new("AzureSettings__PodName", "Pod name", "bot-0"),
             new("AzureSettings__MediaFolder", "Media folder", "archive"),
             new("AzureSettings__EventsFolder", "Events folder", "events"),
+        ]),
+        ("Event Grid diagnostics (optional — inactive unless key is set)",
+        [
+            new("AzureSettings__TopicName", "Topic name", "recordingbotevents"),
+            new("AzureSettings__RegionName", "Topic region", "australiaeast"),
+            new("AzureSettings__TopicKey", "Topic key", Secret: true),
         ]),
     ];
 

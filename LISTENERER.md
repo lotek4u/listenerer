@@ -93,8 +93,12 @@ using the `AzureSettings__<Property>` convention. Copy
 | `AzureSettings__ServiceDnsName` | Public DNS name Teams reaches the bot on |
 | `AzureSettings__CertificateThumbprint` | Thumbprint of the TLS cert in the Windows cert store (LocalMachine) matching the DNS name |
 | `AzureSettings__CallSignalingPort` | Local HTTPS port for Teams signaling webhooks (default 9441; map public 443 to it) |
+| `AzureSettings__CallSignalingPublicPort` | Public port Teams uses in the callback URL (default 443) |
 | `AzureSettings__InstanceInternalPort` | Local TCP media port (default 8445) |
 | `AzureSettings__InstancePublicPort` | Public port the media port is exposed on |
+| `AzureSettings__ServiceCname` | Media platform FQDN override (blank = `ServiceDnsName`) |
+| `AzureSettings__ServicePath` | Signaling webhook path prefix (blank = `/`) |
+| `AzureSettings__TopicName` / `TopicKey` / `RegionName` | Optional Event Grid diagnostics publisher — inactive unless `TopicKey` is set |
 | `AzureSettings__RecordingRootFolder` | **Listenerer** — recording sink; local dir (`D:\recordings`) or UNC share (`\\nas\recordings`). Blank = OS temp |
 | `AzureSettings__IsStereo`, `WAVSampleRate`, `WAVQuality` | Optional audio post-processing |
 | `AzureSettings__CaptureEvents`, `PodName`, `MediaFolder`, `EventsFolder` | Diagnostics / upstream leftovers — defaults are fine |
@@ -102,6 +106,19 @@ using the `AzureSettings__<Property>` convention. Copy
 **Media port reality:** ONE media port multiplexes ALL concurrent calls on the instance.
 You do not need a port per call, and adding media ports means running additional bot
 instances. For the hackathon, one signaling port + one media port is the whole footprint.
+
+**Fixed by protocol (deliberately NOT configurable):** the media wire format
+(PCM 16 kHz/16-bit/mono — Teams defines it), the webhook route `/api/calling`
+(registered on the Azure Bot; changing it buys nothing), the Entra auth discovery URL
+(public-cloud constant), and the certificate store (`LocalMachine\My`). Everything else
+an operator could plausibly need lives in the `.env`.
+
+**Media transport is TCP-only — there is no UDP mode.** Application-hosted media bots
+receive audio over a single TLS/TCP connection from Microsoft's relays; the
+`Microsoft.Skype.Bots.Media` SDK exposes no UDP listener (verified against the SDK
+binary). "UDP fallback" is a Teams *client* concept (clients use UDP 3478-3481 to the
+relays); it never applies to the bot's ingress. Proxy/forward the two TCP ports and
+media works.
 
 ## Build
 

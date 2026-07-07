@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <AssemblyTitle>Listenerer Config</AssemblyTitle>
     <Product>Listenerer</Product>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
   </PropertyGroup>
 </Project>
